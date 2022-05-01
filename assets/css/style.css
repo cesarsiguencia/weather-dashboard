@@ -1,0 +1,40 @@
+header{
+    background-color: blue;
+}
+
+.header-title {
+    text-align: center;
+    padding: 25px;
+    font-size: 50px;
+    color: whitesmoke
+    
+}
+
+main {
+    padding: 15px;
+}
+
+.cities {
+    margin: 15px auto;
+    display: grid;
+    align-items: center;
+
+}
+
+.information-parts {
+    margin: 15px auto;
+    display: grid;
+  
+}
+
+button {
+    margin: 7px auto;
+    border-radius: 7px;
+    width: 90%;
+}
+
+input {
+    width: 90%;
+    border-radius: 7px;
+    margin: 7px auto;
+}
