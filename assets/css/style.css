@@ -24,7 +24,16 @@ main {
 .information-parts {
     margin: 15px auto;
     display: grid;
+    align-items: center;
+
+
   
+}
+
+.weather-stats{
+    display: flex;
+    flex-direction: row;
+    background-color:beige;
 }
 
 button {
@@ -37,4 +46,35 @@ input {
     width: 90%;
     border-radius: 7px;
     margin: 7px auto;
+}
+
+.center{
+    align-items: center;
+    margin: auto;
+}
+
+.center-forecast {
+    margin: 5px auto;
+    display: flex;
+    flex-direction: row;
+    background-color:paleturquoise;;
+}
+
+.city-block{
+    margin: 25px 50px;
+}
+
+.center{
+    align-items: center;
+    margin: auto;
+}
+
+.center-future-days{
+    align-items: center;
+    margin: 10px auto;
+    text-align: center
+}
+
+img{
+    align-items: center;
 }
