@@ -101,3 +101,15 @@ img{
     background-color: purple;
     color: white
 }
+
+#city-buttons{
+    text-align: center;
+}
+
+#search-city{
+    width: 100%
+}
+
+#search-button{
+    width: 100%
+}
