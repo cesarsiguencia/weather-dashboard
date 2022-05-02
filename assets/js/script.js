@@ -38,9 +38,9 @@ var getCityCoordinates = function(city){
             response.json().then(function(data){
                 var lat = data[1].lat
                 var lon = data[1].lon
-                saveSearch(city)
                 getCityWeather(lat, lon, city)
                 getWeekForecast(lat, lon, city)
+                saveSearch(city)
             })
         } else {
             alert("Error: Github User Not Found")
@@ -64,7 +64,7 @@ var getCityWeather = function(lat, lon, city){
                 
             })
         } else {
-            alert("Error: Github User Not Found")
+            alert("Error: City User Not Found")
         }
     })
 
@@ -104,14 +104,13 @@ var getWeekForecast = function(lat, lon, city){
     fetch(apiUrl).then(response => {
         if(response.ok){
             response.json().then(function(data){
-                console.log(data)
                 displayWeeklyForecast(data.daily)
                 
 
                 
             })
         } else {
-            alert("Error: Github User Not Found")
+            alert("Error: City User Not Found")
         }
     })
 }
@@ -161,17 +160,32 @@ var displayWeeklyForecast = function(daily){
 
 var saveSearch = function(city){
 
-    if(searchHistory.length == 0){
+    if(searchHistory.length === 0){
         pushToArray(city)
+        console.log(searchHistory, 'first time')
     } else {
+        // console.log(searchHistory, 'array exists')
+
+        // ============================= WHY IS THIS MAKING MY PG UNRESPONSIVE?
+
+        // for (var i = 0; searchHistory.length;i++){
+        //     if(city === searchHistory[i]){
+        //         searchHistory.splice(i, 1)
+        //     }
+        // }
+
         searchHistory.forEach(savedEntry => {
+            var indexCounter = 0
             if(city === savedEntry){
-                console.log('Direct match')
-                return
-            } else {
-                pushToArray(city)
+                console.log('direct match')
+                searchHistory.splice(indexCounter, 1)
+                console.log(searchHistory)
+                
             }
+            indexCounter++
         })
+
+        pushToArray(city)
     }
 
 
@@ -181,7 +195,6 @@ var saveSearch = function(city){
 
 var pushToArray = function(city){
     searchHistory.push(city)
-    console.log(saveSearch)
 
     localStorage.setItem("cities", JSON.stringify(searchHistory))
     var oneCity = document.createElement('div')
