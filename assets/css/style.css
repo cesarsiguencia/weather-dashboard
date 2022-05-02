@@ -81,25 +81,30 @@ img{
 
 .green{
     background-color: green;
-    color: white
+    color: white;
+    text-align: center
 }
 
 .yellow{
     background-color: yellow;
+    text-align: center
 }
 
 .orange{
     background-color:orange;
+    text-align: center
 }
 
 .red{
     background-color: red;
-    color: white
+    color: white;
+    text-align: center
 }
 
 .purple{
     background-color: purple;
-    color: white
+    color: white;
+    text-align: center
 }
 
 #city-buttons{
