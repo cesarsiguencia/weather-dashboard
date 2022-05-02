@@ -27,7 +27,7 @@ var getCityCoordinates = function(city){
     showTime()
     city = city.toUpperCase()
 
-    var apiUrl = `http://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=5&appid=36a8fc1729aa2a8593bb0dac198321dd`
+    var apiUrl = `https://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=5&appid=36a8fc1729aa2a8593bb0dac198321dd`
 
     fetch(apiUrl).then(response => {
         if(response.ok){
@@ -78,7 +78,7 @@ var displayCurrentStats = function(current, city){
 
     var weatherImage = document.createElement('div')
     weatherImage.className="center"
-    weatherImage.innerHTML =  `<img src="http://openweathermap.org/img/wn/${current.weather[0].icon}@2x.png " alt="Current Weather Icon">`
+    weatherImage.innerHTML =  `<img src="https://openweathermap.org/img/wn/${current.weather[0].icon}@2x.png " alt="Current Weather Icon">`
     cityBlock.appendChild(weatherImage)
 
     var cityStats = document.createElement('div')
@@ -149,7 +149,7 @@ var displayWeeklyForecast = function(daily){
 
         var dayIcon = document.createElement('div')
         dayIcon.className='center'
-        dayIcon.innerHTML =  `<img src="http://openweathermap.org/img/wn/${oneDay.weather[0].icon}@2x.png " alt="Current Weather Icon">`
+        dayIcon.innerHTML =  `<img src="https://openweathermap.org/img/wn/${oneDay.weather[0].icon}@2x.png " alt="Current Weather Icon">`
         dayBlock.appendChild(dayIcon)
 
         var dayStats = document.createElement('div')
