@@ -14,11 +14,9 @@ var showTime = function(){
 
 
 var searchCity = function(event){
-    showTime()
+    
 
     event.preventDefault();
-    weatherStats.textContent = ''
-    dailyStats.textContent = ''
 
     var typedCity = searchInput.value.trim()
     if(typedCity){
@@ -26,11 +24,13 @@ var searchCity = function(event){
         getCityCoordinates(typedCity)
 
     }
-
-
 }
 
 var getCityCoordinates = function(city){
+    weatherStats.textContent = ''
+    dailyStats.textContent = ''
+    showTime()
+
     var apiUrl = `http://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=5&appid=36a8fc1729aa2a8593bb0dac198321dd`
 
     fetch(apiUrl).then(response => {
@@ -162,64 +162,40 @@ var saveSearch = function(city){
 
     if(searchHistory.length === 0){
         pushToArray(city)
-        console.log(searchHistory, 'first time')
     } else {
-        // console.log(searchHistory, 'array exists')
-
-        // ============================= WHY IS THIS MAKING MY PG UNRESPONSIVE?
-
-        // for (var i = 0; searchHistory.length;i++){
-        //     if(city === searchHistory[i]){
-        //         searchHistory.splice(i, 1)
-        //     }
-        // }
-
         searchHistory.forEach(savedEntry => {
-            var indexCounter = 0
             if(city === savedEntry){
-                console.log('direct match')
-                searchHistory.splice(indexCounter, 1)
-                console.log(searchHistory)
-                
-            }
-            indexCounter++
+                var filtered = searchHistory.filter(e => e !=savedEntry)
+                searchHistory = filtered
+                }
         })
-
         pushToArray(city)
     }
-
-
-
-    
 }
 
 var pushToArray = function(city){
     searchHistory.push(city)
-
     localStorage.setItem("cities", JSON.stringify(searchHistory))
-    var oneCity = document.createElement('div')
-    oneCity.className= 'center-future-days'
-    oneCity.innerHTML= city
-    cityBtns.appendChild(oneCity)
+    displayHistory()
 }
 
 
 
 var displayHistory = function(){
+    searchHistory = JSON.parse(localStorage.getItem("cities"))
+
     if(!searchHistory){
         searchHistory = []
-        console.log(searchHistory)
     } else {
-        searchHistory = JSON.parse(localStorage.getItem("cities"))
-
-
+        if(cityBtns){
+            cityBtns.textContent= ''
+        }
         for ( var i = 0; i < searchHistory.length; i++){
             var oneCity = document.createElement('div')
             oneCity.className= 'center-future-days'
             oneCity.innerHTML= searchHistory[i]
             oneCity.setAttribute('city', searchHistory[i])
             cityBtns.appendChild(oneCity)
-            
         }
     }
 }
@@ -237,8 +213,6 @@ var clickedCity = function(event){
     }
     
 }
-
-
 
 cityBtns.addEventListener("click", clickedCity)
 
