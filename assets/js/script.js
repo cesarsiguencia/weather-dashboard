@@ -82,11 +82,36 @@ var displayCurrentStats = function(current, city){
     cityStats.innerHTML= 
     `Temperature: ${current.temp} Celcius <br> Humidity: ${current.humidity} <br> Wind Speed: ${current.wind_speed} mph`
     ;
+
+    var uviInfo = document.createElement('p')
+
+    if(0 <= current.uvi && current.uvi <= 3){
+        uviInfo.className="green"
+    }
+    if(3 < current.uvi && current.uvi <= 6){
+        uviInfo.className="yellow"
+    }
+    if(6 < current.uvi && current.uvi <= 8){
+        uviInfo.className="orange"
+    } 
+    if(8 < current.uvi && current.uvi <= 11){
+        uviInfo.className="red"
+    }
+    if(current.uvi > 11){
+        uviInfo.className="purple"
+    }
+
+    uviInfo.innerHTML = `UV: ${current.uvi}`
+
+    cityStats.appendChild(uviInfo)
+
+
     cityBlock.append(cityStats)
 }
 
 var getWeekForecast = function(lat, lon, city){
     var apiUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&units=metric&exclude=minutely,hourly&appid=36a8fc1729aa2a8593bb0dac198321dd`
+    console.log(apiUrl)
 
     fetch(apiUrl).then(response => {
         if(response.ok){
@@ -134,8 +159,34 @@ var displayWeeklyForecast = function(daily){
         dayStats.innerHTML= 
         `Temperature: <br> ${oneDay.temp.day} Celcius <br><br>
         Humidity: <br> ${oneDay.humidity} <br><br>
-        Wind Speed: <br> ${oneDay.wind_speed} mph`
+        Wind Speed: <br> ${oneDay.wind_speed} mph <br><br>`
+        
+
+        var uviInfo = document.createElement('p')
+
+        if(0 <= oneDay.uvi && oneDay.uvi <= 3){
+            uviInfo.className="green"
+        }
+        if(3 < oneDay.uvi && oneDay.uvi <= 6){
+            uviInfo.className="yellow"
+        }
+        if(6 < oneDay.uvi && oneDay.uvi <= 8){
+            uviInfo.className="orange"
+        } 
+        if(8 < oneDay.uvi && oneDay.uvi <= 11){
+            uviInfo.className="red"
+        }
+        if(oneDay.uvi > 11){
+            uviInfo.className="purple"
+        }
+
+        uviInfo.innerHTML = `UV: ${oneDay.uvi}`
+
+        dayStats.appendChild(uviInfo)
+
         dayBlock.appendChild(dayStats)
+
+        
     }
 }
 

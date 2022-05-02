@@ -78,3 +78,26 @@ input {
 img{
     align-items: center;
 }
+
+.green{
+    background-color: green;
+    color: white
+}
+
+.yellow{
+    background-color: yellow;
+}
+
+.orange{
+    background-color:orange;
+}
+
+.red{
+    background-color: red;
+    color: white
+}
+
+.purple{
+    background-color: purple;
+    color: white
+}
