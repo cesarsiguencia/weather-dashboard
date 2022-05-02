@@ -4,7 +4,6 @@ var weatherStats = document.querySelector('#weather-stats')
 var dailyStats = document.querySelector('#daily-stats')
 var displayCityInfo = document.querySelector('#clear-information')
 var searchHistory = ''
-
 var cityBtns = document.querySelector('#city-buttons')
 var time =''
 
@@ -12,24 +11,21 @@ var showTime = function(){
     time = moment().format('dddd' + ', ' + 'MMMM Do YYYY')
 }
 
-
 var searchCity = function(event){
-    
-
     event.preventDefault();
 
     var typedCity = searchInput.value.trim()
     if(typedCity){
-        console.log(typedCity)
         getCityCoordinates(typedCity)
-
     }
 }
 
 var getCityCoordinates = function(city){
     weatherStats.textContent = ''
     dailyStats.textContent = ''
+    searchInput.value = ''
     showTime()
+    city = city.toUpperCase()
 
     var apiUrl = `http://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=5&appid=36a8fc1729aa2a8593bb0dac198321dd`
 
@@ -43,35 +39,28 @@ var getCityCoordinates = function(city){
                 saveSearch(city)
             })
         } else {
-            alert("Error: Github User Not Found")
+            alert("Error: Incorrect City Name")
         }
     })
 }
 
 var getCityWeather = function(lat, lon, city){
-
-
     var apiUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&&units=metric&appid=36a8fc1729aa2a8593bb0dac198321dd`
 
     fetch(apiUrl).then(response => {
         if(response.ok){
             response.json().then(function(data){
-
                 var currentStats = data.current
                 var currentCity = city
                 displayCurrentStats(currentStats, currentCity)
-
-                
             })
         } else {
-            alert("Error: City User Not Found")
+            alert("Error: City Not Found")
         }
     })
-
 }
 
 var displayCurrentStats = function(current, city){
-
     weatherStats.className = "weather-stats"
 
     var cityHeader = document.createElement("h3")
@@ -94,29 +83,23 @@ var displayCurrentStats = function(current, city){
     `Temperature: ${current.temp} Celcius <br> Humidity: ${current.humidity} <br> Wind Speed: ${current.wind_speed} mph`
     ;
     cityBlock.append(cityStats)
-
 }
 
 var getWeekForecast = function(lat, lon, city){
     var apiUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&units=metric&exclude=minutely,hourly&appid=36a8fc1729aa2a8593bb0dac198321dd`
 
-
     fetch(apiUrl).then(response => {
         if(response.ok){
             response.json().then(function(data){
-                displayWeeklyForecast(data.daily)
-                
-
-                
+                displayWeeklyForecast(data.daily) 
             })
         } else {
-            alert("Error: City User Not Found")
+            alert("Error: City Not Found")
         }
     })
 }
 
 var displayWeeklyForecast = function(daily){
-  
     var dailyHeader = document.createElement("h3")
     dailyHeader.className="center"
     dailyHeader.innerHTML = '<h3>5 Day Forecast</h3>'
@@ -153,19 +136,17 @@ var displayWeeklyForecast = function(daily){
         Humidity: <br> ${oneDay.humidity} <br><br>
         Wind Speed: <br> ${oneDay.wind_speed} mph`
         dayBlock.appendChild(dayStats)
-     
-
     }
 }
 
 var saveSearch = function(city){
-
     if(searchHistory.length === 0){
         pushToArray(city)
     } else {
         searchHistory.forEach(savedEntry => {
-            if(city === savedEntry){
+            if(city.toLowerCase() === savedEntry.toLowerCase()){
                 var filtered = searchHistory.filter(e => e !=savedEntry)
+                city = city.toUpperCase()
                 searchHistory = filtered
                 }
         })
@@ -174,12 +155,14 @@ var saveSearch = function(city){
 }
 
 var pushToArray = function(city){
-    searchHistory.push(city)
+    searchHistory.unshift(city)
+    console.log(searchHistory.length)
+    if(searchHistory.length > 10)[
+        searchHistory = searchHistory.slice(0, 10)
+    ]
     localStorage.setItem("cities", JSON.stringify(searchHistory))
     displayHistory()
 }
-
-
 
 var displayHistory = function(){
     searchHistory = JSON.parse(localStorage.getItem("cities"))
@@ -190,6 +173,10 @@ var displayHistory = function(){
         if(cityBtns){
             cityBtns.textContent= ''
         }
+        var elementTitle = document.createElement('p')
+        elementTitle.textContent= "Search History: Click on City to see results"
+        cityBtns.appendChild(elementTitle)
+
         for ( var i = 0; i < searchHistory.length; i++){
             var oneCity = document.createElement('div')
             oneCity.className= 'center-future-days'
@@ -200,20 +187,15 @@ var displayHistory = function(){
     }
 }
 
-displayHistory()
-
-searchBtn.addEventListener("click", searchCity)
-
 var clickedCity = function(event){
     var city = event.target.getAttribute("city")
 
     if(city){
-        console.log(`This city is ${city}`)
         getCityCoordinates(city)
     }
     
 }
 
 cityBtns.addEventListener("click", clickedCity)
-
-// 36a8fc1729aa2a8593bb0dac198321dd
+searchBtn.addEventListener("click", searchCity)
+displayHistory()
