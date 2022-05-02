@@ -32,6 +32,10 @@ var getCityCoordinates = function(city){
     fetch(apiUrl).then(response => {
         if(response.ok){
             response.json().then(function(data){
+                if (data.length === 0){
+                    alert('Error: Enter a valid city name!')
+                    return
+                }
                 var lat = data[1].lat
                 var lon = data[1].lon
                 getCityWeather(lat, lon, city)
@@ -80,8 +84,7 @@ var displayCurrentStats = function(current, city){
     var cityStats = document.createElement('div')
     cityStats.className="center"
     cityStats.innerHTML= 
-    `Temperature: ${current.temp} Celcius <br> Humidity: ${current.humidity} <br> Wind Speed: ${current.wind_speed} mph`
-    ;
+    `Temperature: ${current.temp} Celcius <br> Humidity: ${current.humidity} <br> Wind Speed: ${current.wind_speed} mph`;
 
     var uviInfo = document.createElement('p')
 
@@ -102,16 +105,12 @@ var displayCurrentStats = function(current, city){
     }
 
     uviInfo.innerHTML = `UV: ${current.uvi}`
-
     cityStats.appendChild(uviInfo)
-
-
     cityBlock.append(cityStats)
 }
 
 var getWeekForecast = function(lat, lon, city){
     var apiUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&units=metric&exclude=minutely,hourly&appid=36a8fc1729aa2a8593bb0dac198321dd`
-    console.log(apiUrl)
 
     fetch(apiUrl).then(response => {
         if(response.ok){
@@ -128,7 +127,6 @@ var displayWeeklyForecast = function(daily){
     var dailyHeader = document.createElement("h3")
     dailyHeader.className="center"
     dailyHeader.innerHTML = '<h3>5 Day Forecast</h3>'
-
     dailyStats.appendChild(dailyHeader)
 
     var weekBlock = document.createElement('div')
@@ -181,12 +179,8 @@ var displayWeeklyForecast = function(daily){
         }
 
         uviInfo.innerHTML = `UV: ${oneDay.uvi}`
-
         dayStats.appendChild(uviInfo)
-
-        dayBlock.appendChild(dayStats)
-
-        
+        dayBlock.appendChild(dayStats) 
     }
 }
 
@@ -207,7 +201,6 @@ var saveSearch = function(city){
 
 var pushToArray = function(city){
     searchHistory.unshift(city)
-    console.log(searchHistory.length)
     if(searchHistory.length > 10)[
         searchHistory = searchHistory.slice(0, 10)
     ]
@@ -244,7 +237,6 @@ var clickedCity = function(event){
     if(city){
         getCityCoordinates(city)
     }
-    
 }
 
 cityBtns.addEventListener("click", clickedCity)
